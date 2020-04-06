@@ -1,45 +1,82 @@
-import React, {useState, useEffect, createContext} from 'react';
+import React, {useState, useEffect} from 'react';
+import WeatherCurrent from './WeatherCurrent';
+import WeatherForecast from './WeatherForecast';
+import SearchWeather from './SearchWeather';
+import  '../App.css';
 
 const Weather = () => {
 
-    useEffect(() => {
-        const fetch = async () => {
-          
-             
-          
-            let fetchedWeather = await getWeather("Stockholm");
-            let fetchedForecast = await getForecast("Stockholm");
-            setWeatherData([fetchedWeather]);
-            setForecastData([fetchedForecast]);
-            setSearch(["Stockholm"]);
-          }; 
-       
-        fetch();
-       
-      }, []);
     const [weatherData, setWeatherData] = useState([]);
     const [forecastData, setForecastData] = useState([]);
     const [search, setSearch] = useState("");
-    const api = '34ade633d0c2e3c56329e6d869685a4e';
+    
 
-    const getWeather = async (city) => {
-        let data;
-        await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${api}&units=metric`)
+    useEffect(() => {
+        const getAll = async () => {
+
+            let weather = await getWeather("Stockholm");
+            let forecast = await getForecast("Stockholm");
+            setWeatherData([weather]);
+            setForecastData([forecast]);            
+            console.log(weather);
+          };       
+        getAll();       
+      }, []);
+    
+    const getWeather = async (searchString) => {
+        let data;        
+        let city;
+        city = `?q=${searchString}`;        
+        let units="&units=metric";
+        let api = "&appid=34ade633d0c2e3c56329e6d869685a4e";
+        let url ="https://api.openweathermap.org/data/2.5/weather";      
+        
+        await fetch(`${url}${city}${units}${api}`)
         .then(res => {
             data = res.json();
         });
         return data;
     };
 
-    const getForecast = async (city) => {
-        let data;
-
-        await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${api}&units=metric`)
+    const getForecast = async (searchString) => {
+        let data;        
+        let city;
+        city = `?q=${searchString}`;        
+        let units="&units=metric";
+        let api = "&appid=34ade633d0c2e3c56329e6d869685a4e";
+        let url ="https://api.openweathermap.org/data/2.5/forecast";      
+        
+        await fetch(`${url}${city}${units}${api}`)
         .then(res => {
             data = res.json();
-        });
+        });        
         return data;
-    };  
+    };
+
+    const handleSearchWeather = async (searchString) => {
+        let weather = await getWeather(searchString);
+        let forecast = await getForecast(searchString);
+        if(weather.cod === 200){
+        setWeatherData([weather]);
+        setForecastData([forecast]);
+        document.getElementById("error").innerHTML = "";
+        }
+        else
+        {
+            document.getElementById("error").innerHTML = "City does not exist in database";
+        }
+    }
+
+    return(
+        <React.Fragment>
+        
+                    <SearchWeather searchWeather = {handleSearchWeather} />
+                
+            <WeatherCurrent weatherData = {weatherData} />
+            <WeatherForecast forecastData = {forecastData} />
+        
+        </React.Fragment>
+    );
 }
 
 export default Weather;
