@@ -1,3 +1,24 @@
-.App {
-  text-align: center;
+.container {
+  text-align: center; 
+  
 }
+
+.card {
+  display: inline;  
+  background: aqua;
+}
+
+#error{
+  color: red;
+}
+
+#fore{
+  margin: 30px;
+}
+
+.card-body{
+  background-color: #34919f; 
+  color: white; 
+}
+
+

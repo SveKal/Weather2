@@ -7,9 +7,7 @@ import  '../App.css';
 const Weather = () => {
 
     const [weatherData, setWeatherData] = useState([]);
-    const [forecastData, setForecastData] = useState([]);
-    const [search, setSearch] = useState("");
-    
+    const [forecastData, setForecastData] = useState([]);    
 
     useEffect(() => {
         const getAll = async () => {
@@ -17,8 +15,7 @@ const Weather = () => {
             let weather = await getWeather("Stockholm");
             let forecast = await getForecast("Stockholm");
             setWeatherData([weather]);
-            setForecastData([forecast]);            
-            console.log(weather);
+            setForecastData([forecast]);   
           };       
         getAll();       
       }, []);
@@ -63,18 +60,22 @@ const Weather = () => {
         }
         else
         {
-            document.getElementById("error").innerHTML = "City does not exist in database";
+            document.getElementById("error").innerHTML = "*City does not exist in database";
         }
     }
 
     return(
         <React.Fragment>
-        
-                    <SearchWeather searchWeather = {handleSearchWeather} />
-                
+            <div className="jumbotron">
+                <div className = "row">
+                    <div className="d-block mx-auto">            
+                        <h2 className = "display-4">Weather App</h2>
+                    </div>
+                </div>
+            </div>
+            <SearchWeather searchWeather = {handleSearchWeather} />                
             <WeatherCurrent weatherData = {weatherData} />
             <WeatherForecast forecastData = {forecastData} />
-        
         </React.Fragment>
     );
 }

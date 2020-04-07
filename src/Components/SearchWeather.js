@@ -10,11 +10,22 @@ const SearchWeather = props => {
     };
 
     return(
-        <form onSubmit={handleSubmit}>
-            <input type='text' placeholder='city' name='city' onChange={(e) => setCity(e.target.value)}/>            
-            <button type = "submit">Submit</button>
-            <p id = "error"></p>
-        </form>
+        
+            <div className = "container">
+                <div className = "row">
+                    <div className = "d-block mx-auto">
+                        <form className = "form-inline" onSubmit={handleSubmit}>
+                            <div className = "form-group mx-sm-3 mb-2">
+                                <input className = "form-control" type='text' placeholder='search a city...' name='city' onChange={(e) => setCity(e.target.value)}/>
+                            </div>           
+                            <button className = "btn btn-primary mb-2" type = "submit">Search</button>                            
+                        </form>
+                        <p id = "error"></p> 
+                    </div>                       
+                </div>
+             </div>
+               
+        
     );
 }
 
